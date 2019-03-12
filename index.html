@@ -328,10 +328,10 @@
 <p>NAME</p>
 <p>  What a network interface should be named.<br>Also, as a temporary workaround, this is what a device node should be named; usually the kernel provides the defined node name or creates and removes the node before udev even receives any event.<br>Changing the node name from the kernel’s default creates inconsistencies and is not supported. If the kernel and NAME specify different names, an error is logged. udev is only expected to handle device node permissions and to create additional symlinks, not to change kernel-provided device node names. Instead of renaming a device node, SYMLINK should be used. However, symlink names must never conflict with device node names, as that would result in unpredictable behavior.</p>
 </blockquote>
-<p>In lastest version of <code>man udev</code>, NAME can not be modify by rules:</p>
+<p>In latest version of <code>man udev</code>, NAME can not be modify by rules:</p>
 <blockquote>
 <p>NAME</p>
-<p>The name to use for a network interface. The name of a device node can not be changed by udev, only additional symlinks can be created.</p>
+<p>  The name to use for a network interface. The name of a device node can not be changed by udev, only additional symlinks can be created.</p>
 </blockquote>
 
           
@@ -614,7 +614,7 @@
 </li>
 </ol>
 <pre><code>此时还会有一个问题是修改.user.ini之后即使重启php-fpm之后，文件也没有生效，页面上依然提示blog路径不在blog/public之下，可能的原因是`fastcgi.conf`这个全局配置文件中的配置覆盖了，此时需要将这行注释掉：
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vim /usr/local/nginx/conf/fastcgi.conf</span><br><span class="line"><span class="meta">#</span><span class="bash"> fastcgi_param PHP_ADMIN_VALUE <span class="string">"open_basedir=<span class="variable">$document_root</span>/:/tmp/:/proc/"</span>;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vim /usr/local/nginx/conf/fastcgi.conf</span><br><span class="line"><span class="meta">#</span> fastcgi_param PHP_ADMIN_VALUE "open_basedir=$document_root/:/tmp/:/proc/";</span><br></pre></td></tr></table></figure>
 </code></pre><ol start="3">
 <li>关于权限设定<br> 此时访问应该就正常了，关于路径设置： <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">chown yourgroup:yourgroup laravel_path(.user.ini可能会影响命令执行，可以先 chattr -i)</span><br><span class="line">chown www:www -R ./storage</span><br><span class="line">chown www:www -R ./bootstrap/cache</span><br></pre></td></tr></table></figure></li>
 </ol>

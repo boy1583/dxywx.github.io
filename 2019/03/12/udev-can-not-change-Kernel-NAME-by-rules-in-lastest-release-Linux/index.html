@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Bigtomato&#39;s Blog">
 <meta property="og:description" content="In earlier Linux releases, udev can modify kernel name by rules like ……,NAME:=&amp;quot;prefix_%k&amp;quot; But this is not recommended in early version:  NAME   What a network interface should be named.Also,">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-03-12T09:39:58.977Z">
+<meta property="og:updated_time" content="2019-03-12T09:41:46.694Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="udev can not change Kernel NAME by rules in lastest release Linux">
 <meta name="twitter:description" content="In earlier Linux releases, udev can modify kernel name by rules like ……,NAME:=&amp;quot;prefix_%k&amp;quot; But this is not recommended in early version:  NAME   What a network interface should be named.Also,">
@@ -325,10 +325,10 @@
 <p>NAME</p>
 <p>  What a network interface should be named.<br>Also, as a temporary workaround, this is what a device node should be named; usually the kernel provides the defined node name or creates and removes the node before udev even receives any event.<br>Changing the node name from the kernel’s default creates inconsistencies and is not supported. If the kernel and NAME specify different names, an error is logged. udev is only expected to handle device node permissions and to create additional symlinks, not to change kernel-provided device node names. Instead of renaming a device node, SYMLINK should be used. However, symlink names must never conflict with device node names, as that would result in unpredictable behavior.</p>
 </blockquote>
-<p>In lastest version of <code>man udev</code>, NAME can not be modify by rules:</p>
+<p>In latest version of <code>man udev</code>, NAME can not be modify by rules:</p>
 <blockquote>
 <p>NAME</p>
-<p>The name to use for a network interface. The name of a device node can not be changed by udev, only additional symlinks can be created.</p>
+<p>  The name to use for a network interface. The name of a device node can not be changed by udev, only additional symlinks can be created.</p>
 </blockquote>
 
       
