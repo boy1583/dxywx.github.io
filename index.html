@@ -241,6 +241,146 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.bigtomato.cn/2019/03/12/udev-can-not-change-Kernel-NAME-by-rules-in-lastest-release-Linux/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Bigtomato">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bigtomato's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/12/udev-can-not-change-Kernel-NAME-by-rules-in-lastest-release-Linux/" itemprop="url">udev can not change Kernel NAME by rules in lastest release Linux</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-12T17:20:57+08:00">
+                2019-03-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/12/udev-can-not-change-Kernel-NAME-by-rules-in-lastest-release-Linux/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/03/12/udev-can-not-change-Kernel-NAME-by-rules-in-lastest-release-Linux/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>In earlier Linux releases, udev can modify kernel name by rules like <code>……,NAME:=&quot;prefix_%k&quot;</code></p>
+<p>But this is not recommended in early version:</p>
+<blockquote>
+<p>NAME</p>
+<p>  What a network interface should be named.<br>Also, as a temporary workaround, this is what a device node should be named; usually the kernel provides the defined node name or creates and removes the node before udev even receives any event.<br>Changing the node name from the kernel’s default creates inconsistencies and is not supported. If the kernel and NAME specify different names, an error is logged. udev is only expected to handle device node permissions and to create additional symlinks, not to change kernel-provided device node names. Instead of renaming a device node, SYMLINK should be used. However, symlink names must never conflict with device node names, as that would result in unpredictable behavior.</p>
+</blockquote>
+<p>In lastest version of <code>man udev</code>, NAME can not be modify by rules:</p>
+<blockquote>
+<p>NAME</p>
+</blockquote>
+<p>The name to use for a network interface. The name of a device node can not be changed by udev, only additional symlinks can be created.</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://blog.bigtomato.cn/2019/02/14/Linux-use-shadwosocks-and-privoxy-to-proxy/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -559,7 +699,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -567,6 +707,15 @@
 
             
 
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
             
 
           </nav>
