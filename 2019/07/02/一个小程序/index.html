@@ -79,20 +79,20 @@
 
 
 
-<meta name="description" content="07年做的小程序出了一点问题，主要是播放接口变了。（像这种API接口突变，而且拒不兼容之前调用方式的行为真是很恶心。）把之前尘封的项目从git上拉下来，项目使用的脚手架都比较老了，很多依赖都[deprecated]了。正好最近很忙，那就重构一下吧。&amp;lt; !–more–&amp;gt; 脚手架选择目前小程序开发的有以下三个框架：  mpvue wepy taro   这三个框架中前两个是基于vue.js">
+<meta name="description" content="07年做的小程序出了一点问题，主要是播放接口变了。（像这种API接口突变，而且拒不兼容之前调用方式的行为真是很恶心。）把之前尘封的项目从git上拉下来，项目使用的脚手架都比较老了，很多依赖都[deprecated]了。正好最近很忙，那就重构一下吧。">
 <meta name="keywords" content="小程序 wechat mpvue colorui">
 <meta property="og:type" content="article">
 <meta property="og:title" content="一个小程序">
 <meta property="og:url" content="https://blog.bigtomato.cn/2019/07/02/一个小程序/index.html">
 <meta property="og:site_name" content="Bigtomato&#39;s Blog">
-<meta property="og:description" content="07年做的小程序出了一点问题，主要是播放接口变了。（像这种API接口突变，而且拒不兼容之前调用方式的行为真是很恶心。）把之前尘封的项目从git上拉下来，项目使用的脚手架都比较老了，很多依赖都[deprecated]了。正好最近很忙，那就重构一下吧。&amp;lt; !–more–&amp;gt; 脚手架选择目前小程序开发的有以下三个框架：  mpvue wepy taro   这三个框架中前两个是基于vue.js">
+<meta property="og:description" content="07年做的小程序出了一点问题，主要是播放接口变了。（像这种API接口突变，而且拒不兼容之前调用方式的行为真是很恶心。）把之前尘封的项目从git上拉下来，项目使用的脚手架都比较老了，很多依赖都[deprecated]了。正好最近很忙，那就重构一下吧。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://blog.bigtomato.cn/2019/07/02/一个小程序/media/15620531250000/gh_ed7b1f2939f4_1280.jpg">
-<meta property="og:updated_time" content="2019-07-02T08:56:52.671Z">
+<meta property="og:image" content="https://blog.bigtomato.cn/images/gh_ed7b1f2939f4_1280.jpg">
+<meta property="og:updated_time" content="2019-07-02T09:00:56.332Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一个小程序">
-<meta name="twitter:description" content="07年做的小程序出了一点问题，主要是播放接口变了。（像这种API接口突变，而且拒不兼容之前调用方式的行为真是很恶心。）把之前尘封的项目从git上拉下来，项目使用的脚手架都比较老了，很多依赖都[deprecated]了。正好最近很忙，那就重构一下吧。&amp;lt; !–more–&amp;gt; 脚手架选择目前小程序开发的有以下三个框架：  mpvue wepy taro   这三个框架中前两个是基于vue.js">
-<meta name="twitter:image" content="https://blog.bigtomato.cn/2019/07/02/一个小程序/media/15620531250000/gh_ed7b1f2939f4_1280.jpg">
+<meta name="twitter:description" content="07年做的小程序出了一点问题，主要是播放接口变了。（像这种API接口突变，而且拒不兼容之前调用方式的行为真是很恶心。）把之前尘封的项目从git上拉下来，项目使用的脚手架都比较老了，很多依赖都[deprecated]了。正好最近很忙，那就重构一下吧。">
+<meta name="twitter:image" content="https://blog.bigtomato.cn/images/gh_ed7b1f2939f4_1280.jpg">
 
 
 
@@ -321,7 +321,7 @@
       
 
       
-        <p>07年做的小程序出了一点问题，主要是播放接口变了。（像这种API接口突变，而且拒不兼容之前调用方式的行为真是很恶心。）<br>把之前尘封的项目从git上拉下来，项目使用的脚手架都比较老了，很多依赖都[deprecated]了。<br>正好最近很忙，那就重构一下吧。<br>&lt; !–more–&gt;</p>
+        <p>07年做的小程序出了一点问题，主要是播放接口变了。（像这种API接口突变，而且拒不兼容之前调用方式的行为真是很恶心。）<br>把之前尘封的项目从git上拉下来，项目使用的脚手架都比较老了，很多依赖都[deprecated]了。<br>正好最近很忙，那就重构一下吧。<br><a id="more"></a></p>
 <h2 id="脚手架选择"><a href="#脚手架选择" class="headerlink" title="脚手架选择"></a>脚手架选择</h2><p>目前小程序开发的有以下三个框架：</p>
 <ol>
 <li><a href="https://github.com/Meituan-Dianping/mpvue" target="_blank" rel="noopener">mpvue</a></li>
@@ -355,7 +355,7 @@
 <h3 id="退款证书问题"><a href="#退款证书问题" class="headerlink" title="退款证书问题"></a>退款证书问题</h3><p>上线测试的时候买了很多东西，测试完之后要退款结果证书又过期了，现在微信支付采用了新的顶级CA颁发的证书，重新下一遍，两个pem文件加到服务器上，此时curl又太久了，因为存在一个历史bug，此时又去升级curl。我用的是第三方的yum源才能更新CentOS7上面的curl。</p>
 <p>成功退款了。</p>
 <h2 id="反思"><a href="#反思" class="headerlink" title="反思"></a>反思</h2><p>一般涉及到工具使用、框架使用、编程语言的tips我比较少写总结，我觉得这些东西变得很快，框架日新月异、技术更新迭代、新的特性简化代码……但是大部分人的大部分时间又花在这方面，确实经常做这部分工作会使人变得很熟练，但也就少了很多<strong>解决问题的时间</strong>。<br>我恰恰觉得<strong>解决问题的时间</strong>才是项目中比较有意思的点，并不是主要因为解决了问题推进了项目进展，而是通过解决具体问题，我们的<strong>确定问题所在</strong>、<strong>寻找可能的解决办法</strong>、<strong>解决问题</strong>这种路径会不断地优化。<br><strong>所以解决一个具体的问题不是能力的体现，如何形成并优化自己解决未知问题的模式才是能力的体现。</strong></p>
-<h2 id="访问看看"><a href="#访问看看" class="headerlink" title="访问看看"></a>访问看看</h2><p><img src="media/15620531250000/gh_ed7b1f2939f4_1280.jpg" alt="gh_ed7b1f2939f4_1280"></p>
+<h2 id="访问看看"><a href="#访问看看" class="headerlink" title="访问看看"></a>访问看看</h2><p><img src="/images/gh_ed7b1f2939f4_1280.jpg" alt=""></p>
 
       
     </div>
@@ -481,7 +481,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

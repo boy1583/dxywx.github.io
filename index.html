@@ -321,47 +321,17 @@
 
       
         
-          
-            <p>07年做的小程序出了一点问题，主要是播放接口变了。（像这种API接口突变，而且拒不兼容之前调用方式的行为真是很恶心。）<br>把之前尘封的项目从git上拉下来，项目使用的脚手架都比较老了，很多依赖都[deprecated]了。<br>正好最近很忙，那就重构一下吧。<br>&lt; !–more–&gt;</p>
-<h2 id="脚手架选择"><a href="#脚手架选择" class="headerlink" title="脚手架选择"></a>脚手架选择</h2><p>目前小程序开发的有以下三个框架：</p>
-<ol>
-<li><a href="https://github.com/Meituan-Dianping/mpvue" target="_blank" rel="noopener">mpvue</a></li>
-<li><a href="https://github.com/Tencent/wepy" target="_blank" rel="noopener">wepy</a></li>
-<li><a href="https://github.com/NervJS/taro" target="_blank" rel="noopener">taro</a></li>
-</ol>
-<hr>
-<p>这三个框架中前两个是基于vue.js的，第三个是基于react的，react在阿里实习的时候用过一段时间，忘得差不多了，所以主要是前两个的对比。<br>简单来说，mpvue和通常的vue项目写法差别不大，主要是template + script + style的方式构建组件，然后框架把code parse成符合小程序的代码风格，状态管理可以使用vuex；wepy是腾讯推出的一款框架，结合了vue.js和原生小程序的相关语法，在其中加强了事件、异步这些特性，而且文档比较全一些。<br>综合比较两者之后，我选择了mpvue<a href="http://mpvue.com/mpvue/#_1" target="_blank" rel="noopener">文档</a>来作为开发框架。</p>
-<h2 id="ui风格"><a href="#ui风格" class="headerlink" title="ui风格"></a>ui风格</h2><p>由于是我单方面想重构，并没有拉上之前的前端，（ps：他应该现在在airbnb呆的很爽吧。。。）所以我需要一套基础的布局样式，这里选择了一个色彩对比度比较高的<a href="https://github.com/weilanwl/ColorUI" target="_blank" rel="noopener">colorui</a>。<br>全局引用，小程序中所有padding、text-size、margin这些基本都是用一套风格，保证了统一的视觉效果。<br>一些特殊的组件需要还是需要手动编写css的，这块比较费劲，因为有的时候比较喜欢精确地显示效果，花费了比较多的时间在这块。</p>
-<h2 id="后端"><a href="#后端" class="headerlink" title="后端"></a>后端</h2><p>我们的业务web使用Laravel构建的，api这里和业务系统使用一套同系列的软件Lumen，这样数据格式交互比较方便一些。<br>另外对于这种接口编写真心觉得PHP就是最后的语言，返回一个json接口直接：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> [</span><br><span class="line">    <span class="string">'key'</span> =&gt; <span class="string">'value'</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure></p>
-<p>就行了，然后访问接口就行了，所见即所得，语言层面的差异真心不是靠benchmark节约几毫秒就怎样，还是看能够快速实现，在服务得到验证之后可以针对进行各种优化。</p>
-<h2 id="小程序的一些细节"><a href="#小程序的一些细节" class="headerlink" title="小程序的一些细节"></a>小程序的一些细节</h2><h3 id="网络请求"><a href="#网络请求" class="headerlink" title="网络请求"></a>网络请求</h3><p>网络部分使用fly.js封装实现，然后挂到了Vue.prototype.$api下，这样在所有组件中都能访问，fly.js中可以设置全局拦截器方便了性能检测和业务的拦截，比较方便。</p>
-<h3 id="关于全局数据是否有必要使用vuex"><a href="#关于全局数据是否有必要使用vuex" class="headerlink" title="关于全局数据是否有必要使用vuex"></a>关于全局数据是否有必要使用vuex</h3><p>全局数据类型有人说可以之间定义全局变量，但是这些全局变量无法实现响应式，比如用户登录成功之后页面刷新，购买的价格从非会员间变为会员价，这些都依赖于登录状态的变化而响应式更新。所以这块我才用的是store.js + computed计算属性完成的。更改数据也很简洁，使用commit就可以了。</p>
-<h3 id="屏幕尺寸"><a href="#屏幕尺寸" class="headerlink" title="屏幕尺寸"></a>屏幕尺寸</h3><p>小程序一个比较麻烦的点是运行的手机平台多，各种屏幕尺寸、分辨率不同，这时就要求页面的样式需要具有伸缩性。<br>通常使用iphone6的标准尺寸进行布局就可以，此时<code>1px = 2rpx</code>这块的换算，mpvue会帮忙做，比较贴心。<br>建议在程序启动的时候获取一些必要的显示参数：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">wx.getSystemInfo(&#123;</span><br><span class="line">      success: <span class="function"><span class="params">e</span> =&gt;</span> &#123;</span><br><span class="line">        Vue.prototype.$StatusBar = e.statusBarHeight</span><br><span class="line">        Vue.prototype.$ScreenWidth = e.screenWidth</span><br><span class="line">        <span class="keyword">let</span> custom = wx.getMenuButtonBoundingClientRect()</span><br><span class="line">        Vue.prototype.$Custom = custom</span><br><span class="line">        Vue.prototype.$CustomBar = custom.bottom + custom.top - e.statusBarHeight</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure></p>
-<p>这样在子组件中可以方便的获取：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">data () &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        StatusBar: <span class="keyword">this</span>.$StatusBar,</span><br><span class="line">        CustomBar: <span class="keyword">this</span>.$CustomBar,</span><br><span class="line">        Custom: <span class="keyword">this</span>.$Custom</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="布局方面"><a href="#布局方面" class="headerlink" title="布局方面"></a>布局方面</h3><p>尽量使用flex布局，不用过多考虑各种浮动、清除、定位问题，拥抱现代化的布局方式吧。<br>阮一峰的flex<a href="http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html" target="_blank" rel="noopener">布局教程</a>可以多看几遍。</p>
-<h3 id="音乐播放组件"><a href="#音乐播放组件" class="headerlink" title="音乐播放组件"></a>音乐播放组件</h3><p>小程序后台音乐播放的API变成了一个单例的manager，这时候要求ui和manager做比较多的同步工作：</p>
-<ul>
-<li>用户拖动进度条 =&gt; 进度、时间都更新（此时不再响应music的time变化，因为音乐还在播放） =&gt; 松开进度条 =&gt; seek music</li>
-<li>用户点击进度条的位置 =&gt; 进度、时间都更新 =&gt; seek music</li>
-<li>music play =&gt; 更新时间、进度 =&gt; 更新进度条位置</li>
-</ul>
-<p>这几点需要反复进行测试，确保ui和音乐播放可以<code>双向同步</code>的。</p>
-<h3 id="分享页面的进入路径"><a href="#分享页面的进入路径" class="headerlink" title="分享页面的进入路径"></a>分享页面的进入路径</h3><p>小程序存在多个页面，用户都可以选择分享出去。只需要在page中设置<code>onShareAppMessage</code>方法就行。<br>如果其他用户从分享的页面直接进入小程序，小程序的page stack中只有这一个页面，此时造成<code>wx.NavigateBack()</code>函数失效，新来的用户无法到达首页。<br>这个问题我想的办法是进行首页转发。</p>
-<ol>
-<li>页面跳转是可以携带参数的，如果用户进入的是二级页面，则二级页面首先进行<code>reLaunch</code>到首页，并携带<code>redirect</code>参数标明二级页面位置（还可以包含其他数据，比如商品id等）。</li>
-<li>首页onLoad之后，获取到<code>redirect</code>参数，拼接url，然后进行<code>navgateTo</code>跳转即可。<br>这种方法可以重建page stack，这样新的用户可以通过返回方式进入首页。</li>
-</ol>
-<h2 id="后端接口遇到到的一些小问题"><a href="#后端接口遇到到的一些小问题" class="headerlink" title="后端接口遇到到的一些小问题"></a>后端接口遇到到的一些小问题</h2><h3 id="下单金额少一分？"><a href="#下单金额少一分？" class="headerlink" title="下单金额少一分？"></a>下单金额少一分？</h3><p>PHP精度问题，微信支付要求以【分】为结算单位，如果使用了【元】小数 * 100计算，此时结果可能不足，比如¥19.9，结算成1989分：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$price_percent = (int)($price * <span class="number">100</span>); <span class="comment">// wrong</span></span><br></pre></td></tr></table></figure></p>
-<p>这个问题主要是PHP的浮点数保存精度造成的。<br>比较推荐的办法是使用PHP的高精度算法：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$price=(int)bcmul(<span class="number">110</span>, <span class="number">100</span>);</span><br></pre></td></tr></table></figure></p>
-<h3 id="退款证书问题"><a href="#退款证书问题" class="headerlink" title="退款证书问题"></a>退款证书问题</h3><p>上线测试的时候买了很多东西，测试完之后要退款结果证书又过期了，现在微信支付采用了新的顶级CA颁发的证书，重新下一遍，两个pem文件加到服务器上，此时curl又太久了，因为存在一个历史bug，此时又去升级curl。我用的是第三方的yum源才能更新CentOS7上面的curl。</p>
-<p>成功退款了。</p>
-<h2 id="反思"><a href="#反思" class="headerlink" title="反思"></a>反思</h2><p>一般涉及到工具使用、框架使用、编程语言的tips我比较少写总结，我觉得这些东西变得很快，框架日新月异、技术更新迭代、新的特性简化代码……但是大部分人的大部分时间又花在这方面，确实经常做这部分工作会使人变得很熟练，但也就少了很多<strong>解决问题的时间</strong>。<br>我恰恰觉得<strong>解决问题的时间</strong>才是项目中比较有意思的点，并不是主要因为解决了问题推进了项目进展，而是通过解决具体问题，我们的<strong>确定问题所在</strong>、<strong>寻找可能的解决办法</strong>、<strong>解决问题</strong>这种路径会不断地优化。<br><strong>所以解决一个具体的问题不是能力的体现，如何形成并优化自己解决未知问题的模式才是能力的体现。</strong></p>
-<h2 id="访问看看"><a href="#访问看看" class="headerlink" title="访问看看"></a>访问看看</h2><p><img src="media/15620531250000/gh_ed7b1f2939f4_1280.jpg" alt="gh_ed7b1f2939f4_1280"></p>
-
-          
+          <p>07年做的小程序出了一点问题，主要是播放接口变了。（像这种API接口突变，而且拒不兼容之前调用方式的行为真是很恶心。）<br>把之前尘封的项目从git上拉下来，项目使用的脚手架都比较老了，很多依赖都[deprecated]了。<br>正好最近很忙，那就重构一下吧。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/07/02/一个小程序/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
-    </div>
+    </p></div>
     
     
     
@@ -457,146 +427,6 @@
                 </span>
                 <a href="/2019/03/12/udev-can-not-change-Kernel-NAME-by-rules-in-lastest-release-Linux/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/03/12/udev-can-not-change-Kernel-NAME-by-rules-in-lastest-release-Linux/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>In earlier Linux releases, udev can modify kernel name by rules like <code>……,NAME:=&quot;prefix_%k&quot;</code></p>
-<p>But this is not recommended in early version:</p>
-<blockquote>
-<p>NAME</p>
-<p>  What a network interface should be named.<br>Also, as a temporary workaround, this is what a device node should be named; usually the kernel provides the defined node name or creates and removes the node before udev even receives any event.<br>Changing the node name from the kernel’s default creates inconsistencies and is not supported. If the kernel and NAME specify different names, an error is logged. udev is only expected to handle device node permissions and to create additional symlinks, not to change kernel-provided device node names. Instead of renaming a device node, SYMLINK should be used. However, symlink names must never conflict with device node names, as that would result in unpredictable behavior.</p>
-</blockquote>
-<p>In latest version of <code>man udev</code>, NAME can not be modify by rules:</p>
-<blockquote>
-<p>NAME</p>
-<p>  The name to use for a network interface. The name of a device node can not be changed by udev, only additional symlinks can be created.</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bigtomato.cn/2019/03/12/media/15620531250000/udev-can-not-change-Kernel-NAME-by-rules-in-lastest-release-Linux/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Bigtomato">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Bigtomato's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/12/media/15620531250000/udev-can-not-change-Kernel-NAME-by-rules-in-lastest-release-Linux/" itemprop="url">udev can not change Kernel NAME by rules in lastest release Linux</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-12T17:20:57+08:00">
-                2019-03-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/03/12/media/15620531250000/udev-can-not-change-Kernel-NAME-by-rules-in-lastest-release-Linux/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/03/12/media/15620531250000/udev-can-not-change-Kernel-NAME-by-rules-in-lastest-release-Linux/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1003,7 +833,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
