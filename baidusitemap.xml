@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://blog.bigtomato.cn/2019/07/26/fix%20kernel%20module%20in%20scsi%20sr_mod%20at%20multiple%20drivers%20performence/</loc>
+    <lastmod>2019-07-26</lastmod>
+  </url>  <url>
     <loc>https://blog.bigtomato.cn/2019/07/02/%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%A8%8B%E5%BA%8F/</loc>
     <lastmod>2019-07-02</lastmod>
   </url>  <url>
